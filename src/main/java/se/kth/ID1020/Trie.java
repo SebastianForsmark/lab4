@@ -1,14 +1,21 @@
 package se.kth.ID1020;
 
 public class Trie {
-    char key;
-    int value;
-    Trie[] branch;
+    public Trie root;
+    public String key;
+    public int value;
+    public Trie[] branch;
 
     public Trie() {
-        this.key = 0;
-        this.branch = new Trie[26];
+        this.key = "";
+        this.branch = new Trie[256];
         int value = 0;
+    }
+
+    public Trie(String key, int value) {
+        this.key = key;
+        this.branch = new Trie[256];
+        this.value = value;
     }
 
     public void put(String key) {
@@ -17,7 +24,7 @@ public class Trie {
             return;
         }
         char currentLetter = key.charAt(0);
-        int currentIndex = currentLetter - 'a';
+        int currentIndex = (int) currentLetter;
 
         if (this.branch[currentIndex] == null) {
             this.branch[currentIndex] = new Trie();
@@ -25,18 +32,53 @@ public class Trie {
 
         this.branch[currentIndex].put(key.substring(1));
     }
-    public int get(String key)
-    {
-        if ("".equals(key)) {
+
+    public int get(String key) {
+        if (isEndOf(key)) {
             return this.value;
         }
         char currentLetter = key.charAt(0);
-        int currentIndex = currentLetter - 'a';
+        int currentIndex = (int) currentLetter;
 
-        if (this.branch[currentIndex] == null)
-        {
+        if (this.branch[currentIndex] == null) {
             return 0;
         }
         return this.branch[currentIndex].get(key.substring(1));
     }
+
+    public int count(String key) {
+        int sumOfBranches = 0;
+        if (isEndOf(key)) {
+            sumOfBranches += this.value;
+            for (int i = 0; i < 256; i++) {
+                if (this.branch[i] != null) {
+                    sumOfBranches += this.branch[i].count("");
+                }
+            }
+            return sumOfBranches;
+        }
+        char currentLetter = key.charAt(0);
+        int currentIndex = (int) currentLetter;
+        return this.branch[currentIndex].count(key.substring(1));
+    }
+
+    public int distinct(String key) {
+        int numOfBranches = 0;
+        if (isEndOf(key)) {
+            for (int i = 0; i < 256; i++) {
+                if (this.branch[i] == null) {
+                } else
+                    numOfBranches += 1 + this.branch[i].distinct("");
+            }
+            return numOfBranches;
+        }
+        char currentLetter = key.charAt(0);
+        int currentIndex = (int) currentLetter;
+        return this.branch[currentIndex].distinct(key.substring(1));
+    }
+
+    private boolean isEndOf(String key) {
+        return "".equals(key);
+    }
+
 }
