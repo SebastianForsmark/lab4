@@ -23,8 +23,7 @@ public class Trie {
             this.value++;
             return;
         }
-        char currentLetter = key.charAt(0);
-        int currentIndex = (int) currentLetter;
+        int currentIndex = (int) key.charAt(0);
 
         if (this.branch[currentIndex] == null) {
             this.branch[currentIndex] = new Trie();
@@ -37,8 +36,7 @@ public class Trie {
         if (isEndOf(key)) {
             return this.value;
         }
-        char currentLetter = key.charAt(0);
-        int currentIndex = (int) currentLetter;
+        int currentIndex = (int) key.charAt(0);
 
         if (this.branch[currentIndex] == null) {
             return 0;
@@ -57,8 +55,7 @@ public class Trie {
             }
             return sumOfBranches;
         }
-        char currentLetter = key.charAt(0);
-        int currentIndex = (int) currentLetter;
+        int currentIndex = (int) key.charAt(0);
         return this.branch[currentIndex].count(key.substring(1));
     }
 
@@ -72,8 +69,7 @@ public class Trie {
             }
             return numOfBranches;
         }
-        char currentLetter = key.charAt(0);
-        int currentIndex = (int) currentLetter;
+        int currentIndex = (int) key.charAt(0);
         return this.branch[currentIndex].distinct(key.substring(1));
     }
 
